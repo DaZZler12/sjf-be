@@ -1,0 +1,12 @@
+database:
+  host: localhost
+  port: 27017
+  dbname: jobs # db name
+  username: root
+  password: password
+  usertable: user
+  jobtable: jobs
+
+serverconfig:
+  port: "8080"
+  host: "localhost" # host name
