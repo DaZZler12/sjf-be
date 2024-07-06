@@ -23,8 +23,7 @@ func (sjfRequest *SJFRequest) Validate() error {
 	if sjfRequest.Name == "" {
 		return errors.New(commonErrors.JobNameEmpty)
 	}
-	// the name should be have a-z, A-Z, 0-9, and _ only
-	// if the name has any other characters, return an error
+	// Validate the job name
 	if !isAlphaNumeric(sjfRequest.Name) {
 		return errors.New(commonErrors.JobNameInvalid)
 	}
