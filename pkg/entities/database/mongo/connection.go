@@ -5,8 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"time"
 
 	mongoORM "github.com/DaZZler12/sjf-be/pkg/entities/database/mongo/orm"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.uber.org/zap"
@@ -74,4 +76,28 @@ func GetMongoCollection(collectionName string, opts ...*options.CollectionOption
 		ColName: collectionName,
 		Logger:  zap.L().Named(fmt.Sprintf("collection_%s", collectionName)).With(zap.String("collection", collectionName)),
 	}
+}
+
+// CreateUniqueIndexOnAFields
+//   - creates a unique index on the specified fields in the collection
+//   - collection: the collection on which the index needs to be created
+//   - indexModel: the index model that specifies the fields on which the index needs to be created
+//   - returns an error if the index creation fails
+
+func CreateUniqueIndexOnAFields(collection mongoORM.MongoCollectionDerived, indexModel bson.D) error {
+
+	// Define a context with a timeout to avoid blocking indefinitely
+	// this is required to avoid blocking the application indefinitely
+	// as we are interacting with an external service
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	_, err := collection.Indexes().CreateOne(ctx, mongo.IndexModel{
+		Keys:    indexModel,
+		Options: options.Index().SetUnique(true),
+	})
+	if err != nil {
+		return fmt.Errorf("failed to create unique index on field: %w", err)
+	}
+	return nil
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/DaZZler12/sjf-be/pkg/entities/sjf/model"
 	"github.com/DaZZler12/sjf-be/pkg/entities/sjf/store"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type Service interface {
@@ -14,6 +15,7 @@ type Service interface {
 	// GetByID(ctx context.Context, id string) (*model.SJF, error)
 	// Update(ctx context.Context, sjf *model.SJF) error
 	// Delete(ctx context.Context, id string) error
+	CountDocuments(ctx context.Context, filter bson.M) (int64, error)
 }
 
 type SJFService struct {
