@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/DaZZler12/sjf-be/pkg/entities/sjf/model"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -40,4 +41,13 @@ func (store *SJFStore) Update(ctx context.Context, sjf *model.SJF) error {
 func (store *SJFStore) Delete(ctx context.Context, id string) error {
 	// todo: implement the delete method
 	return nil
+}
+
+// CountDocuments returns the number of documents in the SJF collection
+func (store *SJFStore) CountDocuments(ctx context.Context, filter bson.M) (int64, error) {
+	count, err := store.sjfCollection.CountDocuments(ctx, filter, &options.CountOptions{})
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }

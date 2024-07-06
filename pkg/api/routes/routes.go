@@ -28,6 +28,13 @@ func setupRoutes() {
 	sjfHandler.SjfInit(route)
 }
 
+// GenerateNewGinEngine
+//   - it will return the gin engine instance
+//   - this function is responsible for creating a new gin engine instance
+//   - it will create a new gin engine instance and setup the routes
+//   - it will also add the ginzap middleware to log the requests and panics
+//   - it will also add the CORS middleware
+//   - it will return the gin engine instance
 func GenerateNewGinEngine(logger *zap.Logger) *gin.Engine {
 	once.Do(func() {
 		ginEngineInstance = gin.New() // create a new gin engine instance
@@ -39,7 +46,7 @@ func GenerateNewGinEngine(logger *zap.Logger) *gin.Engine {
 		// Logs all panic to error log
 		//   - stack means whether output the stack info.
 		ginEngineInstance.Use(ginzap.RecoveryWithZap(logger, true))
-		ginEngineInstance.Use(middleware.CORSMiddleware())
+		ginEngineInstance.Use(middleware.CORSMiddleware()) // as of now only CORS middleware is added
 		setupRoutes()
 	})
 	return ginEngineInstance

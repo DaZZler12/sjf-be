@@ -6,6 +6,7 @@ package store
 
 import (
 	"context"
+	"log"
 	"sync"
 
 	"github.com/DaZZler12/sjf-be/pkg/config"
@@ -13,6 +14,7 @@ import (
 	mongoORM "github.com/DaZZler12/sjf-be/pkg/entities/database/mongo/orm"
 	"github.com/DaZZler12/sjf-be/pkg/entities/schema"
 	"github.com/DaZZler12/sjf-be/pkg/entities/sjf/model"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // Store is an interface that defines the methods that should be implemented by the store struct
@@ -22,6 +24,7 @@ type Store interface {
 	GetByID(ctx context.Context, id string) (*model.SJF, error)
 	Update(ctx context.Context, sjf *model.SJF) error
 	Delete(ctx context.Context, id string) error
+	CountDocuments(ctx context.Context, filter bson.M) (int64, error)
 }
 
 // store is a struct that will implement the Store interface
@@ -42,8 +45,14 @@ func New() Store {
 		_, _ = mongo.GetMongoDBInstance(&config.Database)
 		collection := mongo.GetMongoCollection(schema.SJFCollection)
 		if collection == nil {
-			return
+			log.Fatalf("Failed to get the SJF collection")
 		}
+		// Create a unique index on the 'name' field
+		indexModel := bson.D{{Key: "name", Value: 1}}
+		if err := mongo.CreateUniqueIndexOnAFields(collection, indexModel); err != nil {
+			log.Fatalf("Failed to create a unique index on the 'name' field: %v", err)
+		}
+
 		store = &SJFStore{
 			sjfCollection: collection,
 		}

@@ -9,6 +9,7 @@ import (
 	"github.com/DaZZler12/sjf-be/pkg/entities/sjf/model"
 	commonErrors "github.com/DaZZler12/sjf-be/pkg/error"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.uber.org/zap"
 )
@@ -71,6 +72,21 @@ func (handler *SJFHandler) Create(c *gin.Context) {
 	sjfRequest.CalculateDuration()
 	handler.logger.Info("Creating a new SJF", zap.Any("sjfRequest", sjfRequest))
 
+	// count the number of documents in the collection
+	// in order to check if the SJF with the same name already exists
+	filter := bson.M{"name": sjfRequest.Name}
+	count, err := handler.sjfService.CountDocuments(ctx, filter)
+	if err != nil {
+		handler.logger.Error("Failed to count the documents", zap.Error(err))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": commonErrors.InternalServerError})
+		return
+	}
+	if count > 0 {
+		handler.logger.Error("SJF JOB with same name already exists", zap.Any("count", count))
+		c.JSON(http.StatusBadRequest, gin.H{"error": commonErrors.JobExists})
+		return
+	}
+
 	sjf := &model.SJF{
 		ID:       primitive.NewObjectID(),
 		Name:     sjfRequest.Name,
@@ -78,7 +94,7 @@ func (handler *SJFHandler) Create(c *gin.Context) {
 		Status:   constants.Pending,
 	}
 
-	sjf, err := handler.sjfService.Create(ctx, sjf)
+	_, err = handler.sjfService.Create(ctx, sjf)
 	if err != nil {
 		handler.logger.Error("Failed to create the SJF", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": commonErrors.InternalServerError})
