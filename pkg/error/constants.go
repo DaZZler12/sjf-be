@@ -15,4 +15,5 @@ const (
 	ProcessError        string = "error processing the request"
 	BindingError        string = "error binding the request"
 	InternalServerError string = "internal server error"
+	JobNameInvalid      string = "job name is invalid, it should have a-z, A-Z, 0-9, and _ only"
 )
