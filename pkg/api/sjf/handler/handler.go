@@ -13,7 +13,7 @@ type Handler interface {
 	// List(c *gin.Context) ([]*model.SJF, error)
 	Get(c *gin.Context)
 	// Update(c *gin.Context, sjf *model.SJF) error
-	// Delete(c *gin.Context, id string) error
+	Delete(c *gin.Context)
 }
 
 type SJFHandler struct {

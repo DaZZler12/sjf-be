@@ -42,9 +42,12 @@ func (store *SJFStore) Update(ctx context.Context, sjf *model.SJF) error {
 	return nil
 }
 
-// Delete deletes the SJF process with the given ID
-func (store *SJFStore) Delete(ctx context.Context, id string) error {
-	// todo: implement the delete method
+// Delete deletes a SJF process with the given filters
+func (store *SJFStore) Delete(ctx context.Context, filters *bson.M) error {
+	_, err := store.sjfCollection.DeleteOne(ctx, filters, &options.DeleteOptions{})
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
