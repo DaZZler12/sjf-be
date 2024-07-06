@@ -25,10 +25,15 @@ func (store *SJFStore) List(ctx context.Context) ([]*model.SJF, error) {
 	return nil, nil
 }
 
-// GetByID returns the SJF process with the given ID
-func (store *SJFStore) GetByID(ctx context.Context, id string) (*model.SJF, error) {
-	// todo: implement the get by id method
-	return nil, nil
+// Get returns the SJF process with the given filters
+func (store *SJFStore) Get(ctx context.Context, filters *primitive.M) (*model.SJF, error) {
+	obtainedSJF := &model.SJF{}
+	err := store.sjfCollection.FindOne(ctx, obtainedSJF, filters, &options.FindOneOptions{})
+	if err != nil {
+		return nil, err
+	}
+	return obtainedSJF, nil
+
 }
 
 // Update updates the SJF process with the given ID
