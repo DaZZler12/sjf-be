@@ -10,10 +10,10 @@ import (
 
 type Handler interface {
 	Create(c *gin.Context)
-	// List(ctx context.Context) ([]*model.SJF, error)
-	// GetByID(ctx context.Context, id string) (*model.SJF, error)
-	// Update(ctx context.Context, sjf *model.SJF) error
-	// Delete(ctx context.Context, id string) error
+	// List(c *gin.Context) ([]*model.SJF, error)
+	Get(c *gin.Context)
+	// Update(c *gin.Context, sjf *model.SJF) error
+	// Delete(c *gin.Context, id string) error
 }
 
 type SJFHandler struct {

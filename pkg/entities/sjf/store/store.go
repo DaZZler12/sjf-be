@@ -21,7 +21,7 @@ import (
 type Store interface {
 	Create(ctx context.Context, sjf *model.SJF) (*model.SJF, error)
 	List(ctx context.Context) ([]*model.SJF, error)
-	GetByID(ctx context.Context, id string) (*model.SJF, error)
+	Get(ctx context.Context, filters *bson.M) (*model.SJF, error)
 	Update(ctx context.Context, sjf *model.SJF) error
 	Delete(ctx context.Context, id string) error
 	CountDocuments(ctx context.Context, filter bson.M) (int64, error)
