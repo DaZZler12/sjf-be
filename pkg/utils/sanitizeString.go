@@ -2,7 +2,7 @@ package utils
 
 import "regexp"
 
-// SanitizeString
+// SanitizeString will return a sanitized string, to prevent any kind of injection attacks.
 //   - removes special characters from the input string
 //   - returns the sanitized string
 //   - input: string
