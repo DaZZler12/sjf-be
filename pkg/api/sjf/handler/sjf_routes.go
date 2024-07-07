@@ -19,7 +19,7 @@ func SjfInit(route *gin.RouterGroup) {
 		version1 := sjfGroup.Group("/v1")
 		{
 			version1.POST("", sjfHandler.Create)
-			// version1.GET("/list", sjfHandler.List)
+			version1.GET("", sjfHandler.List)
 			version1.GET("/:id", sjfHandler.Get)
 			// version1.PUT("/update", sjfHandler.Update)
 			version1.DELETE("/:id", sjfHandler.Delete)
