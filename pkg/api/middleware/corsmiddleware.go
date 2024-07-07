@@ -7,6 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CORSMiddleware is a middleware to handle CORS
+//   - allows all origins, methods, and headers
+//   - also allows credentials
+//   - sets the max age to 12 hours
+//   - returns a gin.HandlerFunc
 func CORSMiddleware() gin.HandlerFunc {
 	return cors.New(cors.Config{
 		AllowOrigins:     []string{"*"},

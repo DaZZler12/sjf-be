@@ -20,9 +20,13 @@ func (store *SJFStore) Create(ctx context.Context, sjf *model.SJF) (*model.SJF, 
 }
 
 // List returns all the SJF processes in the database
-func (store *SJFStore) List(ctx context.Context) ([]*model.SJF, error) {
-	// todo: implement the list method
-	return nil, nil
+func (store *SJFStore) List(ctx context.Context, filters *bson.M, findOptions *options.FindOptions) ([]*model.SJF, error) {
+	obtainedSJFList := []*model.SJF{} // empty slice
+	err := store.sjfCollection.FindMany(ctx, &obtainedSJFList, filters, findOptions)
+	if err != nil {
+		return nil, err
+	}
+	return obtainedSJFList, nil
 }
 
 // Get returns the SJF process with the given filters

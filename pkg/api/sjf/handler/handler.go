@@ -10,9 +10,9 @@ import (
 
 type Handler interface {
 	Create(c *gin.Context)
-	// List(c *gin.Context) ([]*model.SJF, error)
+	List(c *gin.Context)
 	Get(c *gin.Context)
-	// Update(c *gin.Context, sjf *model.SJF) error
+	// Update(c *gin.Context)
 	Delete(c *gin.Context)
 }
 
