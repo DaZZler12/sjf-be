@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	commonErrors "github.com/DaZZler12/sjf-be/pkg/error"
@@ -15,7 +14,6 @@ type SJFRequest struct {
 }
 
 func (sjfRequest *SJFRequest) CalculateDuration() {
-	fmt.Println("Calculating Duration", time.Duration(sjfRequest.DurationSec)*time.Second)
 	sjfRequest.Duration = time.Duration(sjfRequest.DurationSec * float64(time.Second))
 }
 

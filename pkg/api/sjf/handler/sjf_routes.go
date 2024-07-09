@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func SjfInit(route *gin.RouterGroup) {
+func SjfInit(route *gin.RouterGroup, logger *zap.Logger) {
 	// Initialize the handler
 	sjfHandler := New()
 	if sjfHandler == nil {
@@ -18,12 +18,12 @@ func SjfInit(route *gin.RouterGroup) {
 	{
 		version1 := sjfGroup.Group("/v1")
 		{
-			version1.POST("", sjfHandler.Create)
 			version1.GET("", sjfHandler.List)
 			version1.GET("/:id", sjfHandler.Get)
+			version1.POST("", sjfHandler.Create)
 			// version1.PUT("/update", sjfHandler.Update)
 			version1.DELETE("/:id", sjfHandler.Delete)
 		}
 	}
-	zap.S().Info("SJF routes initialized")
+	logger.Info("SJF handler initialized successfully")
 }

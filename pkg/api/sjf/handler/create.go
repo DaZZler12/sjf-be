@@ -100,6 +100,7 @@ func (handler *SJFHandler) Create(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": commonErrors.InternalServerError})
 		return
 	}
-	handler.logger.Info("SJF created successfully", zap.Any("sjf", sjf))
+	handler.sjfWorker.AddJob(sjf) // add the job to sjf priority queue
+	handler.logger.Info("SJF JOB created successfully", zap.Any("sjf", sjf))
 	c.JSON(http.StatusCreated, sjf) // return the created SJF
 }

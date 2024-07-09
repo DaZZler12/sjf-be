@@ -40,9 +40,12 @@ func (store *SJFStore) Get(ctx context.Context, filters *primitive.M) (*model.SJ
 
 }
 
-// Update updates the SJF process with the given ID
-func (store *SJFStore) Update(ctx context.Context, sjf *model.SJF) error {
-	// todo: implement the update method
+// Update updates the SJF process with the given filters
+func (store *SJFStore) Update(ctx context.Context, filters *bson.M, updates *bson.M) error {
+	_, err := store.sjfCollection.UpdateOne(ctx, filters, updates, &options.UpdateOptions{})
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

@@ -14,7 +14,7 @@ type Service interface {
 	Create(ctx context.Context, sjf *model.SJF) (*model.SJF, error)
 	List(ctx context.Context, filters *bson.M, findOptions *options.FindOptions) ([]*model.SJF, error)
 	Get(ctx context.Context, filters *bson.M) (*model.SJF, error)
-	// Update(ctx context.Context, sjf *model.SJF) error
+	Update(ctx context.Context, sjf *model.SJF, filters *bson.M, updates *bson.M) error
 	Delete(ctx context.Context, filters *bson.M) error
 	CountDocuments(ctx context.Context, filter bson.M) (int64, error)
 }
