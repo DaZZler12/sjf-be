@@ -15,6 +15,7 @@ import (
 var (
 	ginEngineInstance *gin.Engine
 	once              sync.Once
+	loggerInstance    *zap.Logger
 )
 
 // setupRoutes sets up the routes for the server
@@ -25,7 +26,7 @@ func setupRoutes() {
 	route := ginEngineInstance.Group("/api")
 	route.GET("/", healthcheck.HealthCheck)
 	// call the InitRoutes of each module to initialize the individual apis' routes
-	sjfHandler.SjfInit(route)
+	sjfHandler.SjfInit(route, loggerInstance)
 }
 
 // GenerateNewGinEngine
@@ -37,6 +38,7 @@ func setupRoutes() {
 //   - it will return the gin engine instance
 func GenerateNewGinEngine(logger *zap.Logger) *gin.Engine {
 	once.Do(func() {
+		loggerInstance = logger
 		ginEngineInstance = gin.New() // create a new gin engine instance
 		// Add a ginzap middleware, which:
 		//   - Logs all requests, like a combined access and error log.

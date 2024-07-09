@@ -8,6 +8,7 @@ import (
 	"time"
 
 	mongoORM "github.com/DaZZler12/sjf-be/pkg/entities/database/mongo/orm"
+	loggerpkg "github.com/DaZZler12/sjf-be/pkg/entities/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -18,6 +19,7 @@ var (
 	mongoDBInstance *mongo.Database
 	once            sync.Once
 	initErr         error
+	logger          *zap.Logger
 )
 
 //here the mongoDBInstance is initialized only once,
@@ -29,6 +31,11 @@ var (
 
 func GetMongoDBInstance(dbConfig *DatabaseConfig) (*mongo.Database, error) {
 	once.Do(func() {
+		logger = loggerpkg.GetLoggerInstance()
+		if logger == nil {
+			initErr = errors.New("failed to initialize logger")
+			return
+		}
 		if dbConfig == nil {
 			initErr = errors.New("database config is nil, failed to connect to MongoDB")
 			return
@@ -50,7 +57,7 @@ func ConnectToMongo(dbConfig *DatabaseConfig) (*mongo.Database, error) {
 		return nil, fmt.Errorf("failed to ping MongoDB: %w", err)
 	}
 
-	zap.S().Info("Connected to MongoDB....")
+	logger.Info("Connected to MongoDB....")
 	return client.Database(dbConfig.DBName), nil
 }
 
@@ -62,7 +69,7 @@ func DisconnectFromMongo(ctx context.Context) error {
 	if err := mongoDBInstance.Client().Disconnect(ctx); err != nil {
 		return fmt.Errorf("failed to disconnect from MongoDB: %w", err)
 	}
-	zap.S().Info("Disconnected from MongoDB....")
+	logger.Info("Disconnected from MongoDB....")
 	return nil
 }
 
@@ -74,7 +81,7 @@ func GetMongoCollection(collectionName string, opts ...*options.CollectionOption
 	return &mongoORM.MongoORM{
 		Col:     col,
 		ColName: collectionName,
-		Logger:  zap.L().Named(fmt.Sprintf("collection_%s", collectionName)).With(zap.String("collection", collectionName)),
+		Logger:  logger.Named(fmt.Sprintf("collection_%s", collectionName)).With(zap.String("collection", collectionName)),
 	}
 }
 

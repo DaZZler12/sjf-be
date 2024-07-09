@@ -1,6 +1,6 @@
 package store
 
-// here I will define the store interface and also
+// here will define the store interface and also
 // we need to define the struct that will implement this interface
 // this will be used to interact with the database
 
@@ -23,7 +23,7 @@ type Store interface {
 	Create(ctx context.Context, sjf *model.SJF) (*model.SJF, error)
 	List(ctx context.Context, filters *bson.M, findOptions *options.FindOptions) ([]*model.SJF, error)
 	Get(ctx context.Context, filters *bson.M) (*model.SJF, error)
-	Update(ctx context.Context, sjf *model.SJF) error
+	Update(ctx context.Context, filters *bson.M, updates *bson.M) error
 	Delete(ctx context.Context, filters *bson.M) error
 	CountDocuments(ctx context.Context, filter bson.M) (int64, error)
 }
