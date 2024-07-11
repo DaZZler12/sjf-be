@@ -45,7 +45,7 @@ func (handler *SJFHandler) GetJobStatusUsingWebSocket(c *gin.Context) {
 			if err != nil {
 				handler.logger.Error("Failed to retrieve SJF process", zap.Error(err))
 				conn.WriteMessage(websocket.TextMessage, []byte(`{"error": "Failed to retrieve SJF process"}, "message": "Failed to retrieve SJF process"}`))
-				continue
+				return
 			}
 			if sjf.Status == constants.Completed {
 				if err := conn.WriteJSON(gin.H{"jobinfo": sjf}); err != nil {
