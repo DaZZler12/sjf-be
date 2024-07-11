@@ -25,7 +25,7 @@ func (handler *SJFHandler) Delete(c *gin.Context) {
 	err = handler.sjfService.Delete(c, filters)
 	if err != nil {
 		handler.logger.Error("Failed to delete SJF process", zap.Error(err))
-		c.JSON(http.StatusInternalServerError, gin.H{"error": commonerrors.JobDeleteError})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": commonerrors.JobDeleteError, "message": err.Error()})
 		return
 	}
 	handler.logger.Info("SJF process deleted successfully", zap.String("id", id))
