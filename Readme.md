@@ -1,4 +1,11 @@
+
 # SJF-BE: Shortest Job First Scheduler in Go
+
+Ref Video:
+
+https://github.com/user-attachments/assets/ecf95191-ff9f-42b0-a175-47575556c527
+
+
 
 This project implements the Shortest Job First (SJF) scheduling algorithm as a backend service using Go. It provides a complete CRUD interface for managing jobs in the queue, prioritizing them according to their execution time.
 
