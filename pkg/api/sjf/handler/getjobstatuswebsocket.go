@@ -5,7 +5,6 @@ import (
 
 	"github.com/DaZZler12/sjf-be/pkg/entities/sjf/constants"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/websocket"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.uber.org/zap"
@@ -24,14 +23,14 @@ func (handler *SJFHandler) GetJobStatusUsingWebSocket(c *gin.Context) {
 	jobID := c.Param("id")
 	if jobID == "" {
 		handler.logger.Error("Job ID not provided")
-		conn.WriteMessage(websocket.TextMessage, []byte(`{"error": "Job ID not provided"},"message": "Please provide a valid job ID"}`))
+		conn.WriteJSON(gin.H{"error": "Job ID not provided", "message": "Please provide a valid job ID"})
 		return
 	}
 
 	jobObjID, err := primitive.ObjectIDFromHex(jobID)
 	if err != nil {
 		handler.logger.Error("Invalid job ID", zap.Error(err))
-		conn.WriteMessage(websocket.TextMessage, []byte(`{"error": "Invalid job ID"},"message": "Please provide a valid job ID"}`))
+		conn.WriteJSON(gin.H{"error": "Invalid job ID", "message": "Please provide a valid job ID"})
 		return
 	}
 
@@ -44,7 +43,7 @@ func (handler *SJFHandler) GetJobStatusUsingWebSocket(c *gin.Context) {
 			sjf, err := handler.sjfService.Get(ctx, &bson.M{"_id": jobObjID})
 			if err != nil {
 				handler.logger.Error("Failed to retrieve SJF process", zap.Error(err))
-				conn.WriteMessage(websocket.TextMessage, []byte(`{"error": "Failed to retrieve SJF process"}, "message": "Failed to retrieve SJF process"}`))
+				conn.WriteJSON(gin.H{"error": "Failed to retrieve SJF process", "message": "Failed to retrieve SJF process"})
 				return
 			}
 			if sjf.Status == constants.Completed {
