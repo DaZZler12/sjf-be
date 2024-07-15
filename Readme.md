@@ -40,7 +40,7 @@ Follow these instructions to get the project up and running on your local machin
 
 ### Prerequisites
 
-- Go (version 1.15 or later)
+- Go (version 1.19)
 - MongoDB
 
 ### Installation
