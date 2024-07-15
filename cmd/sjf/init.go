@@ -36,7 +36,7 @@ func Init() (*gin.Engine, error) {
 	if logger == nil {
 		log.Fatal("Failed to initialize logger")
 	}
-	defer logger.Sync() // flushes buffer, if any
+	defer logger.Sync() // flushes buffer, if any.
 
 	ServerConfig = &cfg.ServerConfig
 	_, err = mongo.GetMongoDBInstance(&cfg.Database) // initialize the mongo db

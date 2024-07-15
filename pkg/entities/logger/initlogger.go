@@ -12,7 +12,7 @@ import (
 
 var (
 	logger *zap.Logger
-	Once   sync.Once // sync.Once is used to call the function only once
+	Once   sync.Once
 )
 
 // GetLoggerInstance returns a singleton instance of the logger
