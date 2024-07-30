@@ -5,7 +5,7 @@ Ref Video:
 
 https://github.com/user-attachments/assets/ecf95191-ff9f-42b0-a175-47575556c527
 
-
+Do check out my Article: @ https://www.linkedin.com/pulse/enhancing-scalability-efficiency-job-scheduling-first-bhattacharya-lzlzc/?trackingId=BQmZhoZvRfu2zYR4iHgChw%3D%3D
 
 This project implements the Shortest Job First (SJF) scheduling algorithm as a backend service using Go. It provides a complete CRUD interface for managing jobs in the queue, prioritizing them according to their execution time.
 
